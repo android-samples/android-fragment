@@ -4,19 +4,25 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Activityのレイアウト
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Fragmentの生成
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -53,9 +59,31 @@ public class MainActivity extends Activity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			// Viewを生成し
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
+			// ContextMenuをセットし、
+			registerForContextMenu(rootView.findViewById(R.id.button1));
+			// 返す
 			return rootView;
 		}
+
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v,
+				ContextMenuInfo menuInfo) {
+			// TODO Auto-generated method stub
+			super.onCreateContextMenu(menu, v, menuInfo);
+			menu.add(0, 100, 0, "Abc");
+			menu.add(0, 101, 0, "Def");
+		}
+
+		@Override
+		public boolean onContextItemSelected(MenuItem item) {
+			Toast.makeText(getActivity().getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+			return super.onContextItemSelected(item);
+		}
+		
+		
+		
 	}
 }
